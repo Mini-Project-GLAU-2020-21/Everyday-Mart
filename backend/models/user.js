@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
     },
     contactNumber: {
         type: Number,
-        maxlength: 10
+        maxlength: 10,
+        required: true
     },
     email: {
         type: String,
