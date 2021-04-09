@@ -20,3 +20,25 @@ exports.getUser = (req, res) => {
     req.profile.createdAt = undefined;
     return res.json(req.profile);
 };
+
+
+
+// to update user except password.
+exports.updateUser = (req, res) => {
+    User.findByIdAndUpdate(
+        {_id : req.profile._id},
+        {$set: req.body},
+        {new: true, useFindAndModify: false},
+        (err, user) => {
+            if(err){
+                return res.status(400).json({
+                    error: "You are not authorized to update this detail."
+                });
+            }
+            user.salt = undefined;
+            user.encry_password = undefined;
+            user.createdAt = undefined;
+            res.json(user);
+        }
+    );
+};
