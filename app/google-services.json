@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "516339719177",
+    "project_id": "everydaymart-f205e",
+    "storage_bucket": "everydaymart-f205e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516339719177:android:8ff02e597c40e5680a6cd8",
+        "android_client_info": {
+          "package_name": "com.aditya.everydaymart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516339719177-oqde8kr2c6t7tt9u5kintdo99t5ma318.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCxNLBkg40nol_vPutjwolRuzstSU2IzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516339719177-oqde8kr2c6t7tt9u5kintdo99t5ma318.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
