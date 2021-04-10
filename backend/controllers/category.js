@@ -1,14 +1,14 @@
 const Category = require("../models/category");
 
 exports.getCategoryById = (req, res, next, id) => {
-    
-    Category.findById(id).exec((err, cate) => {         //cate is being used as shortform of category..we can use category as well
+
+    Category.findById(id).exec((err, cate) => {         
         if(err){
             return res.status(400).json({
                 error: "Category not found in DB"
             });
         }
-        req.category = cate;                      //cate is being used as shortform of category..as we have declared it as cate above
+        req.category = cate;                      
         next();
     });    
 };
@@ -30,4 +30,16 @@ exports.createCategory = (req, res) => {
         }
         res.json({category});
     });
+};
+
+
+exports.getAllCategory = (req, res) => {
+    Category.find().exec((err, categories) => {
+        if(err){
+            return res.status(400).json({
+                error: "No category found"
+            });
+        }
+        res.json(categories);
+    })
 };
