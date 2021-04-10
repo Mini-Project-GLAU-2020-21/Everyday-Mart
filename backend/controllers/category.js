@@ -1,8 +1,7 @@
 const Category = require("../models/category");
 
 exports.getCategoryById = (req, res, next, id) => {
-
-
+    
     Category.findById(id).exec((err, cate) => {         //cate is being used as shortform of category..we can use category as well
         if(err){
             return res.status(400).json({
@@ -13,6 +12,12 @@ exports.getCategoryById = (req, res, next, id) => {
         next();
     });    
 };
+
+
+exports.getCategory = (req, res) => {
+    return res.json(req.category);
+}
+
 
 
 exports.createCategory = (req, res) => {
