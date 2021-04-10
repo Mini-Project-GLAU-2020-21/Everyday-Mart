@@ -24,7 +24,7 @@ mongoose.connect(process.env.DATABASE, {
 
 
 //These are middlewares.
-app.use(bodyParser.json());             //use url encoded instead of bodyParser.jason()....go and check dis on bodyParser site,How to use it.
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
