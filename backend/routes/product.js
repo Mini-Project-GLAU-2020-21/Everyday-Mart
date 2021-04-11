@@ -30,11 +30,10 @@ router.delete("/product/:productId/:userId", isSignedIn, isAuthenticated, isAdmi
 router.put("/product/:productId/:userId", isSignedIn, isAuthenticated, isAdmin, updateProduct);
 
 // listing route
-// this will be used to display all the product on homepage
 router.get("/products", getAllProducts);
 
 
-// route to display all the category. so that form here you can select one of any category.
+// route to display all the unique categories.
 router.get("/products/categories", getAllUniqueCategories)
 
 
