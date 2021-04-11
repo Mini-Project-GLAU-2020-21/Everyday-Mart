@@ -41,7 +41,7 @@ exports.createProduct = (req, res) => {
         }
 
         // destructure the field
-        const { price, name, description, category, stock, itemsize } = fields;
+        const { price, name, description, category, stock } = fields;
 
 
         if(
@@ -49,8 +49,7 @@ exports.createProduct = (req, res) => {
             !description ||
             !price ||
             !category ||
-            !stock ||
-            !itemsize
+            !stock 
         ) {
             return res.status(400).json({
                 error: "Please include all the fields"
@@ -126,9 +125,9 @@ exports.updateProduct = (req, res) => {
         
         // destructure the field
         
-        const { price, name, description, category, stock, itemsize } = fields;
+        const { price, name, description, category, stock } = fields;
 
-        if(!name || !description || !price || !category || !stock || !itemsize) {
+        if(!name || !description || !price || !category || !stock ) {
             return res.status(400).json({
                 error: "Please include all the fields"
             });
