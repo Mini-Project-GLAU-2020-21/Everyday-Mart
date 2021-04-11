@@ -42,3 +42,18 @@ exports.updateUser = (req, res) => {
         }
     );
 };
+
+
+// to get user's purchase list
+exports.userPurchaseList = (req, res) => {
+    Order.find({user: req.profile._id})
+    .populate("user", "_id firstname")
+    .exec( (err, order) => {
+        if(err){
+            return res.status(400).json({
+                error: "No Order in this account"
+            });
+        }
+        return res.json(order)
+    });
+};
