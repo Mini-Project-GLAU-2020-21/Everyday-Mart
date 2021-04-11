@@ -203,6 +203,27 @@ exports.getAllUniqueCategories = (req, res) => {
 
 
 
+exports.updateStock = (req, res, next) => {
+    let myOperations = req.body.order.product.map(prod => {
+        return {
+            updateOne: {
+                filter: {_id: prod._id},
+                update: {$inc: {stock: -prod.count, sold: +prod.count}}
+            }
+        };
+    });
+
+    Product.bulkWrite(myOperations, {}, (err, products) => {
+        if(err) {
+            return res.status(400).json({
+                error: "Bulk operation failed"
+            });
+        }
+        next();
+    });
+};
+
+
 
 // middleware
 
