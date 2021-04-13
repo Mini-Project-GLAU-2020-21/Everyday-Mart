@@ -57,6 +57,8 @@ public class MainUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //to open edit profile
+                startActivity(new Intent(MainUserActivity.this,ProfileEditUserActivity.class));
+
             }
         });
 
