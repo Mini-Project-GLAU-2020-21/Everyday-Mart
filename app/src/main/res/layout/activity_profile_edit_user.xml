@@ -132,10 +132,10 @@
         android:layout_below="@id/addressLl"
         android:layout_margin="5dp"
         android:background="@drawable/shape_rect02"
-        android:drawableStart="@drawable/ic_phone_gery"
+        android:drawableStart="@drawable/ic_location_grey"
         android:drawablePadding="5dp"
         android:hint="Address"
-        android:inputType="textPostalAddress"
+        android:inputType="textPostalAddress|textMultiLine"
         android:padding="10dp"/>
 
         <Button
