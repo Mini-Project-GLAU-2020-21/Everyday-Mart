@@ -53,7 +53,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     private ImageButton backBtn, gpsBtn;
     private ImageView profileIv;
     private EditText nameEt, phoneEt, countryEt, stateEt, cityEt,
-            addressEt, emailEt, passwordEt, ConfirmpasswordEt;
+            addressEt, emailEt, passwordEt, confirmPasswordEt;
     private Button registerBtn;
     private TextView registerSellerTv;
 
@@ -96,12 +96,12 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         addressEt = findViewById(R.id.addressEt);
         emailEt = findViewById(R.id.emailEt);
         passwordEt = findViewById(R.id.passwordEt);
-        ConfirmpasswordEt = findViewById(R.id.ConfirmpasswordEt);
+        confirmPasswordEt = findViewById(R.id.ConfirmpasswordEt);
         registerBtn = findViewById(R.id.registerBtn);
         registerSellerTv = findViewById(R.id.registerSellerTv);
 
         LocationPermission = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-        cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermission = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -166,7 +166,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         address = addressEt.getText().toString().trim();
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
-        confirmPassword = ConfirmpasswordEt.getText().toString().trim();
+        confirmPassword = confirmPasswordEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(fullName)) {
             Toast.makeText(this, "Enter Full Name", Toast.LENGTH_SHORT).show();
@@ -177,9 +177,9 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         }
 
 
-        if (latitude == 0.0 || longitude == 0.0) {
+        if (latitude == 0.0 || longitude == 0.0)
+        {
             Toast.makeText(this, "Press GPS Button To Detect Location", Toast.LENGTH_SHORT).show();
-
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show();
@@ -187,10 +187,10 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         if (password.length() < 6) {
             Toast.makeText(this, "Password Must Be Greater Than 6", Toast.LENGTH_SHORT).show();
         }
-        if (password.equals(confirmPassword)) {
+        if (password== confirmPassword) {
             Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
         }
-
+        createAccount();
     }
 
     private void createAccount() {
@@ -209,7 +209,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        Toast.makeText(RegisterUserActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUserActivity.this, "" +e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

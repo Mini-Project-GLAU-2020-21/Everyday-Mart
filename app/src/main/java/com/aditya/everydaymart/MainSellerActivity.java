@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +21,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
-    private TextView nameTv;
-    private ImageView logoutBtn,editProfileBtn;
+    private TextView nameTv,shopNameTv,emailTv;
+    private ImageButton logoutBtn,editProfileBtn,addProductBtn;
+    private  ImageView profileIv;
+
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -38,6 +42,11 @@ public class MainSellerActivity extends AppCompatActivity {
         nameTv=findViewById(R.id.nameTv);
         logoutBtn=findViewById(R.id.logoutBtn);
         editProfileBtn=findViewById(R.id.editProfileBtn);
+        shopNameTv=findViewById(R.id.shopNameTv);
+        emailTv=findViewById(R.id.emailTv);
+        addProductBtn=findViewById(R.id.addProductBtn);
+        profileIv=findViewById(R.id.profileIv);
+
 
         progressDialog= new ProgressDialog(this );
         progressDialog.setTitle("Please Wait");
@@ -58,6 +67,13 @@ public class MainSellerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //to open edit profile
                 startActivity(new Intent(MainSellerActivity.this,ProfileEditSellerActivity.class));
+            }
+        });
+        addProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
+
             }
         });
 
@@ -112,10 +128,25 @@ public class MainSellerActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
+
+                    //get data from db
                     String name =""+ds.child("name").getValue();
                     String accountType =""+ds.child("accountType").getValue();
-                    nameTv.setText(name);
+                    String email =""+ds.child("accountType").getValue();
+                    String shopName =""+ds.child("shopName").getValue();
+                    String profileImage =""+ds.child("profileImage").getValue();
 
+                    //set data to ui
+                    nameTv.setText(name);
+                    shopNameTv.setText(shopName);
+                    emailTv.setText(email);
+                    try {
+                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_grey).into(profileIv);
+                    }
+                    catch (Exception e)
+                    {
+                        profileIv.setImageResource(R.drawable.ic_store_grey);
+                    }
                 }
 
             }
