@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logging...");
         progressDialog.show();
 
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener( new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 MakeMeOnline();
@@ -114,11 +114,12 @@ public class LoginActivity extends AppCompatActivity {
     private void MakeMeOnline() {
         //after loging in,make user online
         progressDialog.setMessage("User Checking...");
+
         HashMap<String, Object> hashMap=new HashMap<>();
         hashMap.put("online","true");
 //update value to db
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("User");
-        ref.child(firebaseAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).updateChildren(hashMap).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 //on successful update
@@ -147,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                 for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
                     String accountType = ""+ds.child("accountType").getValue();
-                    if(accountType.equals("seller"))
+                    if(accountType == "seller")
                     {
                         progressDialog.dismiss();
                         startActivity(new Intent(LoginActivity.this,MainSellerActivity.class));

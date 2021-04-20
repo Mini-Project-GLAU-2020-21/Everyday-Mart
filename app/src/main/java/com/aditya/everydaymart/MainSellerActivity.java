@@ -58,7 +58,8 @@ public class MainSellerActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeMeOffline();
+                firebaseAuth.signOut();
+                checkUser();
 
             }
         });
@@ -124,7 +125,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private void loadMyInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds:dataSnapshot.getChildren()){

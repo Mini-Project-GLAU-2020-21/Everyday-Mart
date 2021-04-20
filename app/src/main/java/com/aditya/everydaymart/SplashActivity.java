@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
                         for(DataSnapshot ds:dataSnapshot.getChildren())
                         {
                             String accountType = ""+ds.child("accountType").getValue();
-                            if(accountType.equals("seller"))
+                            if(accountType== "seller")
                             {
                                 startActivity(new Intent(SplashActivity.this,MainSellerActivity.class));
                                 finish();
@@ -72,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });

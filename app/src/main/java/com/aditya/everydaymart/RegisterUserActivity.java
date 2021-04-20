@@ -156,13 +156,14 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     }
 
 
-    private String fullName, phoneNumber, country, state, city, address, email, password, confirmPassword;
+    private String fullName,  phoneNumber, country, state, city, address, email, password, confirmPassword;
 
     private void inputData() {
         fullName = nameEt.getText().toString().trim();
         phoneNumber = phoneEt.getText().toString().trim();
         country = countryEt.getText().toString().trim();
         city = cityEt.getText().toString().trim();
+        state=stateEt.getText().toString().trim();
         address = addressEt.getText().toString().trim();
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
@@ -170,25 +171,31 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
 
         if (TextUtils.isEmpty(fullName)) {
             Toast.makeText(this, "Enter Full Name", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(this, "Enter Phone Number ", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
-        if (latitude == 0.0 || longitude == 0.0)
-        {
+        if (latitude == 0.0 || longitude == 0.0) {
             Toast.makeText(this, "Press GPS Button To Detect Location", Toast.LENGTH_SHORT).show();
+            return;
+
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (password.length() < 6) {
             Toast.makeText(this, "Password Must Be Greater Than 6", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (password== confirmPassword) {
+        if (password.equals(confirmPassword)) {
             Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
+            return;
         }
         createAccount();
     }
@@ -196,9 +203,9 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     private void createAccount() {
         progressDialog.setMessage("Creating Account......");
         progressDialog.show();
-
+//account creating
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                .addOnSuccessListener( new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         saverFirebaseData();
@@ -209,7 +216,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        Toast.makeText(RegisterUserActivity.this, "" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUserActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -217,7 +224,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     private void saverFirebaseData() {
         progressDialog.setMessage("Saving Account Info...");
 
-        final String timestamp = "" + System.currentTimeMillis();
+         final String timestamp = "" + System.currentTimeMillis();
         if (image_uri == null) {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("uid", "" + firebaseAuth.getUid());
@@ -231,7 +238,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             hashMap.put("latitude", "" + latitude);
             hashMap.put("longitude", "" + longitude);
             hashMap.put("timestamp", "" + timestamp);
-            hashMap.put("accountType", "Seller");
+            hashMap.put("accountType", "User");
             hashMap.put("online", "true");
             hashMap.put("profileImage", "");
 
@@ -265,47 +272,50 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //get url of uploaded image
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful()) {
-                        Uri downloadImageUri = uriTask.getResult();
-                        if (uriTask.isSuccessful()) {
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("uid", "" + firebaseAuth.getUid());
-                            hashMap.put("email", "" + email);
-                            hashMap.put("name", "" + fullName);
-                            hashMap.put("phone", "" + phoneNumber);
-                            hashMap.put("country", "" + country);
-                            hashMap.put("state", "" + state);
-                            hashMap.put("city", "" + city);
-                            hashMap.put("address", "" + address);
-                            hashMap.put("latitude", "" + latitude);
-                            hashMap.put("longitude", "" + longitude);
-                            hashMap.put("timestamp", "" + timestamp);
-                            hashMap.put("accountType", "User");
-                            hashMap.put("online", "true");
-                            hashMap.put("profileImage", downloadImageUri);// url of uploaded images
+                    while (!uriTask.isSuccessful());
+                    Uri downloadImageUri = uriTask.getResult();
 
 
-                            //DataBase Saving
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                            ref.child(firebaseAuth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    progressDialog.dismiss();
-                                    startActivity(new Intent(RegisterUserActivity.this, MainUserActivity.class));
-                                    finish();
-                                }
-                            })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                            startActivity(new Intent(RegisterUserActivity.this, MainUserActivity.class));
-                                            finish();
-                                        }
-                                    });
+                    if (uriTask.isSuccessful()) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("uid", "" + firebaseAuth.getUid());
+                        hashMap.put("email", "" + email);
+                        hashMap.put("name", "" + fullName);
+                        hashMap.put("phone", "" + phoneNumber);
+                        hashMap.put("country", "" + country);
+                        hashMap.put("state", "" + state);
+                        hashMap.put("city", "" + city);
+                        hashMap.put("address", "" + address);
+                        hashMap.put("latitude", "" + latitude);
+                        hashMap.put("longitude", "" + longitude);
+                        hashMap.put("timestamp", "" + timestamp);
+                        hashMap.put("accountType", "User");
+                        hashMap.put("online", "true");
+                        hashMap.put("shopOpen", "true");
+                        hashMap.put("profileImage", downloadImageUri);// url of uploaded images
 
-                        }
+
+                        //DataBase Saving
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                        ref.child(firebaseAuth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                progressDialog.dismiss();
+                                startActivity(new Intent(RegisterUserActivity.this, MainUserActivity.class));
+                                finish();
+                            }
+                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        startActivity(new Intent(RegisterUserActivity.this, MainUserActivity.class));
+                                        finish();
+                                    }
+                                });
+
                     }
+
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -318,7 +328,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                     });
         }
     }
-
 
     private void showImageDilog() {
         String[] options = {"Camera", "Gallery"};

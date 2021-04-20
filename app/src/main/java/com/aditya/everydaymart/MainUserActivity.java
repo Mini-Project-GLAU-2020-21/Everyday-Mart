@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +21,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class MainUserActivity extends AppCompatActivity {
     private TextView nameTv;
-    private ImageView logoutBtn,editProfileBtn;
+    private ImageButton logoutBtn,editProfileBtn;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -48,7 +50,8 @@ public class MainUserActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeMeOffline();
+                firebaseAuth.signOut();
+                checkUser();
 
             }
         });
@@ -108,16 +111,31 @@ public class MainUserActivity extends AppCompatActivity {
 
     private void loadMyInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
+
+                    //get data from db
                     String name =""+ds.child("name").getValue();
                     String accountType =""+ds.child("accountType").getValue();
+                    String email =""+ds.child("accountType").getValue();
+                    String shopName =""+ds.child("shopName").getValue();
+                    String profileImage =""+ds.child("profileImage").getValue();
+
+                    //set data to ui
                     nameTv.setText(name);
-
-                }
-
+//                    shopNameTv.setText(shopName);
+//                    emailTv.setText(email);
+//                    try {
+//                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_grey).into(profileIv);
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        profileIv.setImageResource(R.drawable.ic_store_grey);
+//                    }
+   }
+//
             }
 
             @Override

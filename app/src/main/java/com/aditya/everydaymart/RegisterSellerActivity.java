@@ -155,6 +155,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         phoneNumber = phoneEt.getText().toString().trim();
         country = countryEt.getText().toString().trim();
         city = cityEt.getText().toString().trim();
+        state=stateEt.getText().toString().trim();
         address = addressEt.getText().toString().trim();
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
@@ -163,39 +164,47 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
         if (TextUtils.isEmpty(fullName)) {
             Toast.makeText(this, "Enter Full Name", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (TextUtils.isEmpty(shopName)) {
             Toast.makeText(this, "Enter Shop Name", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(this, "Enter Phone Number ", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (TextUtils.isEmpty(deliveryfee)) {
             Toast.makeText(this, "Enter Delivery Fee", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (latitude == 0.0 || longitude == 0.0) {
             Toast.makeText(this, "Press GPS Button To Detect Location", Toast.LENGTH_SHORT).show();
+            return;
 
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (password.length() < 6) {
             Toast.makeText(this, "Password Must Be Greater Than 6", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (password.equals(confirmPassword)) {
+        if (password ==confirmPassword) {
             Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
+            return;
         }
-
+        createAccount();
     }
 
     private void createAccount() {
         progressDialog.setMessage("Creating Account......");
         progressDialog.show();
-
+//account creating
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                .addOnSuccessListener( new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         saverFirebaseData();
@@ -265,8 +274,10 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //get url of uploaded image
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful()) {
+                    while (!uriTask.isSuccessful());
                         Uri downloadImageUri = uriTask.getResult();
+
+
                         if (uriTask.isSuccessful()) {
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("uid", "" + firebaseAuth.getUid());
@@ -308,7 +319,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                                     });
 
                         }
-                    }
+
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {

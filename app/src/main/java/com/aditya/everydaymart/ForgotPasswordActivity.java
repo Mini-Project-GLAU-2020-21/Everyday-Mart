@@ -66,7 +66,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invalid Email...", Toast.LENGTH_SHORT).show();
                 return;
             }
-             progressDialog.setMessage("Reseting Password");
+             progressDialog.setMessage("Recovering Password");
             progressDialog.show();
 
             firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -75,7 +75,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     Toast.makeText(ForgotPasswordActivity.this, "Reset Pass sent on your mail...", Toast.LENGTH_SHORT).show();
                 }
-            }).addOnFailureListener(new OnFailureListener() {
+            })
+                    .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.dismiss();
